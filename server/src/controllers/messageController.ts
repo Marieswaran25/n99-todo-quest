@@ -75,7 +75,6 @@ export class MessageController {
             ]);
             const { id } = req.params;
             const { message } = req.body;
-            console.log(id,message)
 
             if (id) {
                 if (typeof req.token === "object" && req.token.email) {
