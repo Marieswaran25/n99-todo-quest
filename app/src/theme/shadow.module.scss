@@ -1,0 +1,36 @@
+// B&W
+$ShadowS:
+    0px 0px 4px rgba(0, 0, 0, 0.04),
+    0px 8px 8px rgba(0, 0, 0, 0.08);
+$ShadowM:
+    4px -4px 4px rgba(0, 0, 0, 0.04),
+    -4px 8px 12px rgba(0, 0, 0, 0.12);
+$ShadowL:
+    0px 0px 4px rgba(0, 0, 0, 0.04),
+    0px 8px 16px rgba(0, 0, 0, 0.16);
+$ShadowDropDown:
+    0px 0px 4px rgba(0, 0, 0, 0.04),
+    0px 8px 8px rgba(0, 0, 0, 0.08),
+    0px 0px 8px rgba(0, 0, 0, 0.08);
+$ShadowNavigationDropDown: 0 10px 10px 0 rgba(0, 0, 0, 0.1);
+$BlackS:
+    0px 0px 8px 0px rgba(0, 0, 0, 0.08),
+    0px 8px 8px 0px rgba(0, 0, 0, 0.08),
+    0px 8px 40px 0px rgba(0, 0, 0, 0.08);
+$ReportCardShadow: 0px 8px 12px 0px rgba(0, 0, 0, 0.04);
+$ShadowCardGrey: 0px 10px 20px 0px rgba(0, 0, 0, 0.05);
+$RoundShadow: 8px 8px 8px rgba(0, 0, 0, 0.12);
+$FullShadow:
+    0 0 4px rgba(0, 0, 0, 0.04),
+    0 0 12px rgba(0, 0, 0, 0.12);
+:export {
+    S: $ShadowS;
+    M: $ShadowM;
+    L: $ShadowL;
+    ShadowDropDown: $ShadowDropDown;
+    ShadowNavigationDropDown: $ShadowNavigationDropDown;
+    BlackS: $BlackS;
+    ReportCardShadow: $ReportCardShadow;
+    ShadowCardGrey: $ShadowCardGrey;
+    RoundShadow: $RoundShadow;
+}

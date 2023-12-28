@@ -1,0 +1,11 @@
+@import './colors.module.scss';
+
+$bg-gradient-1: linear-gradient(0deg, $C0 0%, $White 100%);
+$bg-gradient-2: linear-gradient(180deg, $GradientColorPink 4.44%, $GradientColorBlue 94%);
+$bg-gradient-3: linear-gradient(90deg, #ff9457 0%, #dea5f9 100%);
+
+:export {
+    bg-gradient-1: $bg-gradient-1;
+    bg-gradient-2: $bg-gradient-2;
+    bg-gradient-3: $bg-gradient-3;
+}

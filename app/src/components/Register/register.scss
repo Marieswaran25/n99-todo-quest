@@ -1,0 +1,51 @@
+@import '../../theme/colors.module.scss';
+@import '../../theme/fonts.scss';
+@import '../../theme/viewport.scss';
+@import '../../theme/common.module.scss';
+@import '../../theme/shadow.module.scss';
+
+.registeration-form{
+    @include flex-model-nogap(column,center,center);
+    height: 100vh;
+.form{
+    width:380px;
+    background-color: $B0;
+    @include mobile{
+        width: 100%;
+    }
+    @include flex-model(column,center,center,1.8rem);
+    border-radius: 10px;
+    box-shadow: $ShadowS;
+    padding: 1.5rem 1rem;
+    img{
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+    }
+    input{
+        height:50px;
+        width: 100%;
+        border-radius: 10px;
+        &:focus{
+            border: 2px solid $C5;
+            outline: none;
+        }
+    }
+    a{
+        font-size: 0.9rem;
+        font-weight: 600;
+        color: $C5;
+        &:hover{
+            color: $LinkTextColor;
+        }
+    }
+    button{
+        height:50px;
+        width: 100%;
+        border-radius: 100px;
+        background-color: $C5;
+        font-size: 0.825rem;
+        font-weight: 500;
+    }
+}
+}

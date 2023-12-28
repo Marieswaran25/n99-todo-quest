@@ -1,0 +1,9 @@
+@import '../../theme/common.module.scss';
+
+.view-wrapper {
+    max-width: $view-width;
+    padding: 0 1.25rem;
+    width: 100%;
+    box-sizing: border-box;
+    margin: auto;
+}

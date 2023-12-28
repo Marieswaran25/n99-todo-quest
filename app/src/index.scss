@@ -1,0 +1,51 @@
+@import './theme/colors.module.scss';
+@import './theme/fonts.scss';
+@import './theme/viewport.scss';
+@import './theme/common.module.scss';
+
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html,
+body {
+    max-width: 100vw;
+    overflow-x: hidden;
+    font-family: 'Gilroy';
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: $B0;
+    --scroll-behavior: smooth;
+    scroll-behavior: smooth;
+}
+input{
+    background-color: $B1;
+    font-family: 'Gilroy';
+    padding-left: 1rem;
+&::placeholder,&::-webkit-input-placeholder{
+    font-family: 'Gilroy';
+}
+}
+button{
+    font-family: 'Gilroy';
+}
+
+body {
+    background-color: $B0;
+    svg {
+        overflow: inherit;
+    }
+}
+
+a {
+    color: inherit;
+    text-decoration: none;
+}
+
+input,
+button,
+submit {
+    border: none;
+}
