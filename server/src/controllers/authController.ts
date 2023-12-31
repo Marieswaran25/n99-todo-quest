@@ -4,6 +4,7 @@ import { body, validationResult } from 'express-validator';
 import bcrypt from 'bcrypt';
 import { _genJWTToken } from "../Helpers/generateJwt";
 import { CustomRequest } from "../types/request";
+import { genRandomColor } from "../Helpers/random";
 
 const _authClient = new PrismaClient().authentication;
 
@@ -35,10 +36,11 @@ export class AuthController {
                         data: {
                             username: username,
                             email: email,
-                            password: encryptedPassword
+                            password: encryptedPassword,
+                            avatar:genRandomColor()
                         }
                     })
-                    const accesstoken = _genJWTToken({ email: createdUser.email })
+                    const accesstoken = _genJWTToken({ email: createdUser.email ,username:createdUser.username })
                     if (accesstoken && createdUser) {
                         const {email,username,avatar}={...createdUser}
                         res.status(201).json({ email,username,avatar,accesstoken });
@@ -78,7 +80,7 @@ export class AuthController {
                 if (user) {
                     const isValidPassword = await bcrypt.compare(password, user.password);
                     if (isValidPassword) {
-                        const accesstoken = _genJWTToken({ email: email });
+                        const accesstoken = _genJWTToken({ email: email ,username:user.username});
                         res.status(202).json({ success: true, accesstoken })
                     }
                     else {

@@ -10,7 +10,7 @@ export function validateJWT(req:CustomRequest,res:Response,next:NextFunction ){
         const token=req.headers.authorization || req.query.token;
         if(token && typeof token==="string"){
             jwt.verify(token.replace('Bearer ',''), JWT_SECRET,(err,decoded)=>{
-                if(err)return res.status(403).json({message:'Invalid Token'});
+                if(err)return res.status(403).json({message:'Invalid Authorization Token'});
                 req.token=decoded;
                 next();
             });

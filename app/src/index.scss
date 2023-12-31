@@ -16,11 +16,11 @@ body {
     font-family: 'Gilroy';
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background-color: $B0;
+    background-color: white;
     --scroll-behavior: smooth;
     scroll-behavior: smooth;
 }
-input{
+input,textarea{
     background-color: $B1;
     font-family: 'Gilroy';
     padding-left: 1rem;
@@ -33,7 +33,7 @@ button{
 }
 
 body {
-    background-color: $B0;
+    background-color: white;
     svg {
         overflow: inherit;
     }
@@ -49,3 +49,34 @@ button,
 submit {
     border: none;
 }
+button{
+    @include flex-model-nogap(row,center,center);
+    >div{
+        border: 2px solid transparent;
+        border-radius: 50%;
+        border-top: 2px solid $B4;
+        width: 1.5rem;
+        height: 1.5rem;
+        -webkit-animation: spin 500ms linear infinite; /* Safari */
+        animation: spin 500ms linear infinite;
+        border-top-color: $B4;
+    }
+}
+    /* Safari */
+    @-webkit-keyframes spin {
+        0% {
+            -webkit-transform: rotate(0deg);
+        }
+        100% {
+            -webkit-transform: rotate(360deg);
+        }
+    }
+
+    @keyframes spin {
+        0% {
+            transform: rotate(0deg);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+    }

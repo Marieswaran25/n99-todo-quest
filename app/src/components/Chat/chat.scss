@@ -1,0 +1,26 @@
+@import '../../theme/colors.module.scss';
+@import '../../theme/fonts.scss';
+@import '../../theme/viewport.scss';
+@import '../../theme/common.module.scss';
+@import '../../theme/shadow.module.scss';
+
+.chat-room{
+    @include flex-model-nogap(row,center,space-between);
+    height: 100vh;
+    box-sizing: border-box;
+    @include mobile{
+        width: 100%;
+        @include flex-model-nogap(column,center,space-between);
+    }
+    aside{
+        @include flex-model-nogap(column,center,space-between);
+        width: 25%;
+        height: 100%;
+        padding: 2% 0;
+        background-color:white;
+        border-right: 1px solid black;
+        @include mobile{
+            width: 100%;
+        }
+    }
+}

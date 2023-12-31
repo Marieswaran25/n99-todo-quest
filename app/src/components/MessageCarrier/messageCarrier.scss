@@ -1,0 +1,42 @@
+@import '../../theme/colors.module.scss';
+@import '../../theme/fonts.scss';
+@import '../../theme/viewport.scss';
+@import '../../theme/common.module.scss';
+@import '../../theme/shadow.module.scss';
+
+
+.message-carrier{
+    width: 100%;
+    max-width: 30%;
+    height: 50px;
+    padding: 1rem;
+    border-radius: 10px;
+    background-color:$B1;
+    @include flex-model-nogap(row,center,space-evenly);
+    &.sender{
+        align-self: flex-end
+    }
+    .options{
+        @include flex-model-nogap(column,center,space-evenly);  
+        height: 50px;
+        p{
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+        small{
+            font-size: 10px;
+        }
+        >div{
+            @include flex-model(row,center,center,1rem);  
+            small{
+                cursor: pointer;
+                font-size: 10px;
+                &:hover{
+                    color: red;
+                }
+            }
+        }
+        
+    }
+   
+}

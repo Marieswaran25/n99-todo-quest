@@ -1,0 +1,45 @@
+@import '../../theme/colors.module.scss';
+@import '../../theme/fonts.scss';
+@import '../../theme/viewport.scss';
+@import '../../theme/common.module.scss';
+@import '../../theme/shadow.module.scss';
+
+.message-bar{
+    @include flex-model(column,center,center,1rem);
+    width: 100%;
+    padding: 1rem;
+    .form{
+        width: 100%;
+        @include flex-model(column,center,center,1rem);
+        input,textarea{
+            height:2.8125rem;
+            width: 100%;
+            border-radius: 10px;
+            &:focus{
+                border: 2px solid $C5;
+                outline: none;
+            }
+            border: none;
+            resize: none;
+        }
+        textarea{
+            height: 70px;
+            padding: 1rem;
+        }
+        small{
+            color: red;
+            margin-right: auto;
+        }
+    }
+}
+
+.form> button ,button{
+        height:50px;
+        width: 100%;
+        border-radius: 100px;
+        background-color: $C5;
+        font-size: 0.825rem;
+        font-weight: 500;
+        color: white;
+        cursor: pointer;
+    }

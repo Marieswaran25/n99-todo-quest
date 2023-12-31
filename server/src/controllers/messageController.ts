@@ -1,10 +1,12 @@
-import { Message, PrismaClient } from "@prisma/client"
-import { body, validationResult } from "express-validator";
-import e, { Request, Response } from "express";
+import { Authentication, Message, PrismaClient } from "@prisma/client"
+import { body, param, validationResult } from "express-validator";
+import  { Response } from "express";
 import { CustomRequest } from "../types/request";
 
 
 const _messageClient = new PrismaClient().message;
+const _authClient = new PrismaClient().authentication;
+
 
 export class MessageController {
 
@@ -21,16 +23,22 @@ export class MessageController {
             }
             try {
                 const { senderEmail, receiverEmail, message } = req.body;
-                const payload = req.token
+                const payload = req.token;
+                const sender = payload && typeof payload === "object" ? payload.email : senderEmail
+                if (sender !== receiverEmail) {
+                    const newMessage: Message = await _messageClient.create({
+                        data: {
+                            senderEmail: sender,
+                            receiverEmail: receiverEmail,
+                            content: message
+                        }
+                    })
+                    res.status(200).json({ newMessage })
+                }
+                else {
+                    res.status(400).json({ message: 'Sender and receiver cannot be same' })
 
-                const newMessage: Message = await _messageClient.create({
-                    data: {
-                        senderEmail: payload && typeof payload === "object" ? payload.email : senderEmail,
-                        receiverEmail: receiverEmail,
-                        content: message
-                    }
-                })
-                res.status(200).json({ newMessage })
+                }
             } catch (error) {
                 res.status(500).json({ message: 'Internal Server Error', error })
             }
@@ -42,24 +50,70 @@ export class MessageController {
     }
     async getMessgesByEmail(req: CustomRequest, res: Response) {
         try {
-            await Promise.all([
-                body('receiverEmail').notEmpty().withMessage('Receiver Email is required').isEmail().withMessage('Invalid Email address').run(req),
-            ]);
             const errors = validationResult(req);
             if (!errors.isEmpty()) {
                 return res.status(400).json({ errors: errors.array()[0].msg });
             }
-            const { receiverEmail } = req.body
+            const { receiverEmail } = req.query
             const payload = req.token;
             if (payload && typeof payload === "object") {
-                const messages: Message[] = await _messageClient.findMany({
+                let senderToReceivermessages: Message[] = [];
+                let receiverToSenderMessage:Message[]=[]
+                senderToReceivermessages = await _messageClient.findMany({
                     where: {
-                        receiverEmail: receiverEmail,
                         senderEmail: payload.email
                     }
                 })
-                const sortedMessages = messages.sort((a, b) => +new Date(a.timestamp) - +new Date(b.timestamp));
-                res.status(200).json({ sortedMessages })
+                receiverToSenderMessage= await _messageClient.findMany({
+                    where: {
+                        senderEmail: String(receiverEmail)
+                    }
+                })
+                if (receiverEmail) {
+                    senderToReceivermessages = senderToReceivermessages.filter((msg) => {
+                        return msg.receiverEmail === receiverEmail
+                    }).sort((a, b) => +new Date(a.timestamp) - +new Date(b.timestamp))
+                    receiverToSenderMessage = receiverToSenderMessage.filter((msg) => {
+                        return msg.receiverEmail === payload.email
+                    }).sort((a, b) => +new Date(a.timestamp) - +new Date(b.timestamp))
+                    const data = await _authClient.findFirst({
+                        where: {
+                            email: String(receiverEmail),
+                        },
+                    });
+                    if(data){
+                        const {password,createdAt,id,...rest}={...data}
+                        res.status(200).json({ senderToReceivermessages,receiverInfo:rest,receiverToSenderMessage})
+                    }
+                }
+                else {
+                    let receivers: string[] = [];
+                    senderToReceivermessages.map((receiver) => {
+                        if (!receivers.includes(receiver.receiverEmail)) {
+                            receivers.push(receiver.receiverEmail)
+                        }
+                    })
+                    let receiversData: Authentication[] = [];
+                    await Promise.all(
+                        receivers.map(async (receiver) => {
+                            const data = await _authClient.findFirst({
+                                where: {
+                                    email: receiver,
+                                },
+                            });
+
+                            if (data) {
+                                receiversData.push(data);
+                            }
+                        })
+                    );
+                    const result=receiversData.map(val=>{
+                        const {avatar,id,email,username}= {...val}
+                        return {avatar,id,email,username,sender:payload.username}
+                    })
+                    res.status(200).json(result);
+                }
+
             }
             else {
                 res.send(401).json({ message: 'Authorization failed' })
@@ -68,6 +122,30 @@ export class MessageController {
             res.status(500).json({ message: 'Internal Server Error', error })
         }
     }
+
+    async getMessageById(req: CustomRequest, res: Response) {
+        try {
+            const { id } = req.params;
+
+            if (typeof req.token === "object" && req.token.email) {
+                const message = await _messageClient.findUnique({
+                    where: {
+                        id: id
+                    }
+                })
+                res.status(200).json({ message })
+            }
+            else {
+                res.status(401).json({ message: 'Authorization failed' })
+            }
+
+
+        } catch (error) {
+            res.status(500).json({ message: 'Internal Server Error', error })
+
+        }
+
+    }
     async updateMessageById(req: CustomRequest, res: Response) {
         try {
             await Promise.all([
@@ -75,9 +153,10 @@ export class MessageController {
             ]);
             const { id } = req.params;
             const { message } = req.body;
+            const {token}=req.query;
 
             if (id) {
-                if (typeof req.token === "object" && req.token.email) {
+                if (req.token ||token) {
                     const updatedMessage = await _messageClient.update({
                         where: {
                             id: id
@@ -102,29 +181,31 @@ export class MessageController {
         }
 
     }
-    async getMessageById(req: CustomRequest, res: Response) {
+    async deleteMessageById(req: CustomRequest, res: Response) {
         try {
             const { id } = req.params;
-
-            if (typeof req.token === "object" && req.token.email) {
-                const message = await _messageClient.findUnique({
-                    where: {
-                        id: id
-                    }
-                })
-                res.status(200).json({ message })
+            const {token}=req.query;
+            if (id) {
+                if (typeof req.token ||token) {
+                    const deletedMessage = await _messageClient.delete({
+                        where: {
+                            id: id
+                        },
+                    })
+                    res.status(200).json({ message: 'Message Deleted', deletedMessage})
+                }
+                else {
+                    res.status(401).json({ message: 'Authorization failed' })
+                }
             }
             else {
-                res.status(401).json({ message: 'Authorization failed' })
+                res.status(404).json({ message: `message id ${id} not found` })
             }
-
 
         } catch (error) {
             res.status(500).json({ message: 'Internal Server Error', error })
-
         }
 
     }
-
 
 }

@@ -1,0 +1,58 @@
+@import '../../theme/colors.module.scss';
+@import '../../theme/fonts.scss';
+@import '../../theme/viewport.scss';
+@import '../../theme/common.module.scss';
+@import '../../theme/shadow.module.scss';
+
+.connections{
+    width: 100%;
+    @include flex-model(column,center,center,1rem);  
+.connection-list{
+    width: 100%;
+    @include flex-model(column,center,center,1rem);  
+    padding: 2rem 0;
+
+.connection{
+    @include flex-model(row,center,flex-start,1rem);
+    width: 90%;
+    height: 60px;
+    cursor: pointer;  
+    div{
+        @include flex-model(column,flex-start,center,0.2rem);  
+        h1{
+            @include flex-model-nogap(row,center,center);
+            font-size: 2rem;
+            border-radius: 50%;
+            height: 2.8125rem;
+            width: 2.8125rem;
+            color: white;
+        }
+        &:first-child{
+            border-radius: 50%;
+        }
+        &:last-child{
+            h5{
+                &:hover{
+                    color:$C5;
+                }
+            }
+        }
+    }
+}
+}
+}
+.connection-list-fallback {
+    width: 100%;
+    @include flex-model(column,center,center,1rem); 
+    padding: 2rem 0;
+    margin-bottom: 70%;
+    .connection{
+        width: 90%;
+        height: 60px;
+        @include flex-model(row,center,flex-start,1rem);
+        .content{
+            @include flex-model(column,flex-start,flex-start,0.5rem); 
+
+        }
+    }
+  }

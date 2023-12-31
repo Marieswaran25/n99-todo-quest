@@ -27,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 // app.use(validateJWT)
 app.use("/api/v1",Routes())
-app.use(setCache);
+// app.use(setCache);
 app.get('/',(req:CustomRequest,res:Response)=>{
     res.send('<h1>A full-duplex Messging Application</h1>')
 })
