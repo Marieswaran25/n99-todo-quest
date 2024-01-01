@@ -19,6 +19,9 @@ main{
             height: 50px;
             border-radius: 50%;
         }
+        @include tablet{
+            margin-top: 10%;
+        }
     }
     .message-section{
         height: 70%;

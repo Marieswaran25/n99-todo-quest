@@ -190,7 +190,7 @@ export const ChatRoom: React.FC<{
                 }
             </div>
             <form className="message-bar" onSubmit={handleSubmit}>
-                <textarea placeholder='Enter the message' id='email' onChange={handleMessage} readOnly={data ? false : true} ref={inputRef} />
+               { data && <textarea placeholder='Enter the message' id='email' onChange={handleMessage} readOnly={data ? false : true} ref={inputRef} />}
                 <button disabled={!data || !inputmessage ? true : false}>{isLoading ? <div className="loader"></div> : <>{"Send"}</>}</button>
             </form>
         </main >

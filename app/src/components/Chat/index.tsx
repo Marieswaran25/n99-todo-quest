@@ -9,7 +9,7 @@ import { ChatRoom } from '../ChatRoom';
 
 
 
-export const Chat: React.FunctionComponent = () => {
+export const Chat = () => {
   const [token, SetToken] = React.useState(localStorage.getItem(LocalStorage.ACCESS_TOKEN) || "");
   const [curentReceiver, setCurrentReceiver] = React.useState("")
   const [isLoading,setIsLoading]=React.useState(false)

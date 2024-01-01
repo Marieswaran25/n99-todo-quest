@@ -6,12 +6,15 @@
 
 
 .message-carrier{
-    width: 100%;
-    max-width: 30%;
+    width: 30%;
     height: 50px;
     padding: 1rem;
     border-radius: 10px;
     background-color:$B1;
+    @include tablet{
+        width: 90%;
+        margin-top: 1rem;
+    }
     @include flex-model-nogap(row,center,space-evenly);
     &.sender{
         align-self: flex-end
