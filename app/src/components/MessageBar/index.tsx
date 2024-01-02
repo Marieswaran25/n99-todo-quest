@@ -44,6 +44,7 @@ export const MessageBar = ({ createMessage }: { createMessage: (data: MessagePro
             setTimeout(() => setColor("none"), 1000)
             setIsLoading(false);
             reset()
+            window.location.reload();
         }
         else if (res.status === 403) {
             setError(res.data.message);
